@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Valerio Huaman</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --gold: #D4AF37;
+      --gold-light: #F0CE6A;
+      --disc-color: #D4AF37;
+      --disc-glow: rgba(212, 175, 55, 0.6);
+      --black: #090909;
+      --surface: #141414;
+      --surface2: #1E1E1E;
+      --text: #F2EFE9;
+      --dim: #7A7570;
+      --green: #25D366;
+      --fb: #1877F2;
+      --ig: #E1306C;
+      --yt: #FF0000;
+      --tt: #69C9D0;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html,
+    body {
+      height: 100%;
+      height: 100dvh;
+      background: var(--black);
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── LOADER ── */
+    #loader {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .loader-icon {
+      font-size: 52px;
+      animation: pulse 1s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+
+      0%,
+      100% {
+        transform: scale(1)
+      }
+
+      50% {
+        transform: scale(1.1)
+      }
+    }
+
+    .loader-label {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 6px;
+      color: var(--gold);
+    }
+
+    .loader-bar {
+      width: 160px;
+      height: 2px;
+      background: var(--surface2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .loader-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+      animation: fill 1.6s ease forwards;
+    }
+
+    @keyframes fill {
+      from {
+        width: 0
+      }
+
+      to {
+        width: 100%
+      }
+    }
+
+    /* ── MAIN LAYOUT ── */
+    main {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transition: opacity 0.6s ease;
+    }
+
+    main.visible {
+      opacity: 1;
+    }
+
+    /* ── TOP STRIP ── */
+    .top-strip {
+      background: var(--gold);
+      color: var(--black);
+      text-align: center;
+      padding: 7px 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      font-weight: 700;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 32px 24px 28px;
+      text-align: center;
+      background: radial-gradient(ellipse 100% 80% at 50% 0%, #1C1200 0%, var(--black) 70%);
+      gap: 0;
+    }
+
+    .player-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      width: 100%;
+    }
+
+    .nav-arrow {
+      background: transparent;
+      border: none;
+      color: var(--dim);
+      font-size: 24px;
+      cursor: pointer;
+      padding: 10px;
+      transition: color 0.3s, transform 0.2s;
+    }
+
+    .nav-arrow:active {
+      transform: scale(0.8);
+    }
+
+    /* ── VINYL DISC PLAYER ── */
+    .disc-wrap {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin-bottom: 22px;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Outer glow ring */
+    .disc-glow {
+      position: absolute;
+      inset: -8px;
+      border-radius: 50%;
+      background: conic-gradient(var(--disc-glow) 0deg,
+          transparent 90deg,
+          var(--disc-glow) 180deg,
+          transparent 270deg,
+          var(--disc-glow) 360deg);
+      animation: glow-spin 4s linear infinite;
+      opacity: 0.5;
+      filter: blur(4px);
+      transition: background 0.5s;
+    }
+
+    @keyframes glow-spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Vinyl grooves background */
+    .disc-vinyl {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background:
+        repeating-radial-gradient(circle at 50% 50%,
+          transparent 30px,
+          rgba(255, 255, 255, 0.03) 31px,
+          transparent 32px,
+          transparent 35px),
+        radial-gradient(circle at 50% 50%, #1a1a1a 0%, #0a0a0a 100%);
+      border: 3px solid #2a2a2a;
+      box-shadow:
+        0 0 0 1px #333,
+        0 12px 40px rgba(0, 0, 0, 0.8),
+        0 0 30px rgba(212, 175, 55, 0.15);
+      animation: disc-idle 0.5s ease-in-out;
+      will-change: transform;
+      overflow: hidden;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.3s;
+    }
+
+    .disc-out-left {
+      transform: translateX(-100px) rotate(-90deg) scale(0.8) !important;
+      opacity: 0;
+    }
+
+    .disc-out-right {
+      transform: translateX(100px) rotate(90deg) scale(0.8) !important;
+      opacity: 0;
+    }
+
+    /* Photo as label in center of disc */
+    .disc-photo {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 3px solid #1a1a1a;
+      overflow: hidden;
+      box-shadow: 0 0 0 2px #333, inset 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .disc-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Placeholder when no photo */
+    .disc-photo-placeholder {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #2a2010, #1a1500);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+    }
+
+    /* Center hole */
+    .disc-hole {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--black);
+      border: 2px solid #333;
+      z-index: 10;
+    }
+
+    /* Play/Pause button overlay */
+    .disc-btn {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 2px solid var(--disc-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 20;
+      transition: background 0.2s, transform 0.15s, opacity 0.3s, border-color 0.5s;
+    }
+
+    .disc-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--disc-color);
+      transition: opacity 0.2s, fill 0.5s;
+    }
+
+    .disc-wrap:active .disc-btn {
+      transform: translate(-50%, -50%) scale(0.92);
+    }
+
+    /* Disc spins when playing */
+    .disc-vinyl.spinning {
+      animation: spin-disc 3s linear infinite;
+    }
+
+    @keyframes spin-disc {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Needle arm */
+    .needle {
+      position: absolute;
+      top: -8px;
+      right: -12px;
+      width: 50px;
+      height: 70px;
+      transform-origin: 16px 8px;
+      transform: rotate(-20deg);
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 15;
+      pointer-events: none;
+    }
+
+    .needle.on-disc {
+      transform: rotate(8deg);
+    }
+
+    .needle svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    /* Playing state glow */
+    .disc-vinyl.spinning {
+      box-shadow:
+        0 0 0 1px #333,
+        0 12px 40px rgba(0, 0, 0, 0.8),
+        0 0 50px var(--disc-glow),
+        0 0 80px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Now playing bar under disc */
+    .now-playing {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+      margin-bottom: 16px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .now-playing.visible {
+      opacity: 1;
+    }
+
+    .np-bars {
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 16px;
+    }
+
+    .np-bar {
+      width: 3px;
+      border-radius: 2px;
+      background: var(--gold);
+      animation: np-anim 0.8s ease-in-out infinite;
+    }
+
+    .np-bar:nth-child(1) {
+      height: 6px;
+      animation-delay: 0s
+    }
+
+    .np-bar:nth-child(2) {
+      height: 12px;
+      animation-delay: 0.15s
+    }
+
+    .np-bar:nth-child(3) {
+      height: 9px;
+      animation-delay: 0.3s
+    }
+
+    .np-bar:nth-child(4) {
+      height: 14px;
+      animation-delay: 0.1s
+    }
+
+    .np-bar:nth-child(5) {
+      height: 7px;
+      animation-delay: 0.25s
+    }
+
+    @keyframes np-anim {
+
+      0%,
+      100% {
+        transform: scaleY(0.3)
+      }
+
+      50% {
+        transform: scaleY(1)
+      }
+    }
+
+    .np-text {
+      font-size: 11px;
+      color: var(--gold);
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 1px;
+    }
+
+    .hero-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 2px;
+      line-height: 1;
+      background: linear-gradient(135deg, #fff 40%, var(--gold) 70%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 6px;
+    }
+
+    .hero-sub {
+      font-size: 13px;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+
+    .hero-tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 0;
+    }
+
+    .tag {
+      font-size: 11px;
+      color: var(--gold);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 4px 12px;
+      border-radius: 20px;
+      letter-spacing: 1px;
+    }
+
+    /* ── SECTION ── */
+    .section {
+      padding: 28px 20px;
+      border-top: 1px solid var(--surface2);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .section-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px;
+      letter-spacing: 2px;
+      color: var(--gold);
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      padding: 2px 10px;
+      border-radius: 2px;
+    }
+
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--text);
+    }
+
+    /* ── MUSIC SECTION ── */
+    .music-msg {
+      background: var(--surface);
+      border-left: 3px solid var(--gold);
+      border-radius: 0 6px 6px 0;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+
+    .music-msg p {
+      font-size: 14px;
+      color: var(--dim);
+      line-height: 1.6;
+    }
+
+    .music-msg strong {
+      color: var(--text);
+    }
+
+    .music-platforms {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .platform-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 16px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      border: 1px solid transparent;
+      transition: transform 0.15s, opacity 0.15s;
+      -webkit-user-select: none;
+    }
+
+    .platform-btn:active {
+      transform: scale(0.96);
+      opacity: 0.85;
+    }
+
+    .platform-btn .p-icon {
+      font-size: 22px;
+      flex-shrink: 0;
+    }
+
+    .platform-btn .p-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .platform-btn .p-name {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .platform-btn .p-action {
+      font-size: 10px;
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-fb {
+      background: rgba(24, 119, 242, 0.1);
+      border-color: rgba(24, 119, 242, 0.25);
+      color: var(--fb);
+    }
+
+    .btn-pres {
+      background: rgba(212, 175, 55, 0.1);
+      border-color: rgba(212, 175, 55, 0.25);
+      color: var(--gold);
+    }
+
+    .btn-yt {
+      background: rgba(255, 0, 0, 0.1);
+      border-color: rgba(255, 0, 0, 0.25);
+      color: var(--yt);
+    }
+
+    .btn-tt {
+      background: rgba(105, 201, 208, 0.1);
+      border-color: rgba(105, 201, 208, 0.25);
+      color: var(--tt);
+    }
+
+    /* ── TAXI SECTION ── */
+    .taxi-big-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px;
+      border-radius: 12px;
+      text-decoration: none;
+      margin-bottom: 12px;
+      transition: transform 0.15s, opacity 0.15s;
+      -webkit-user-select: none;
+    }
+
+    .taxi-big-btn:active {
+      transform: scale(0.97);
+      opacity: 0.9;
+    }
+
+    .tbtn-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .tbtn-icon {
+      font-size: 28px;
+    }
+
+    .tbtn-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 2px;
+    }
+
+    .tbtn-sub {
+      font-size: 11px;
+      opacity: 0.75;
+      margin-top: 1px;
+    }
+
+    .tbtn-arrow {
+      font-size: 22px;
+      opacity: 0.6;
+    }
+
+    .tbtn-contact {
+      background: linear-gradient(135deg, var(--gold), #B8931E);
+      color: var(--black);
+    }
+
+    .tbtn-wa {
+      background: rgba(37, 211, 102, 0.1);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      color: var(--green);
+    }
+
+    /* ── EVENTS SECTION ── */
+    .event-types {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+      scrollbar-width: none;
+      margin-bottom: 16px;
+    }
+
+    .event-types::-webkit-scrollbar {
+      display: none;
+    }
+
+    .event-chip {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      background: var(--surface);
+      border: 1px solid var(--surface2);
+      border-radius: 10px;
+      padding: 14px 16px;
+      min-width: 80px;
+      transition: border-color 0.2s;
+    }
+
+    .event-chip-icon {
+      font-size: 24px;
+    }
+
+    .event-chip-label {
+      font-size: 10px;
+      color: var(--dim);
+      letter-spacing: 0.5px;
+      text-align: center;
+    }
+
+    .event-wa-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 18px;
+      background: rgba(37, 211, 102, 0.08);
+      border: 1px solid rgba(37, 211, 102, 0.3);
+      border-radius: 12px;
+      color: var(--green);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 3px;
+      text-decoration: none;
+      transition: background 0.2s;
+      -webkit-user-select: none;
+    }
+
+    .event-wa-btn:active {
+      background: rgba(37, 211, 102, 0.15);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: auto;
+      padding: 24px 20px;
+      text-align: center;
+      border-top: 1px solid var(--surface2);
+    }
+
+    .footer-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 4px;
+      background: linear-gradient(90deg, var(--dim), var(--gold), var(--dim));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 4px;
+    }
+
+    .footer-copy {
+      font-size: 11px;
+      color: var(--surface2);
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(80px);
+      background: var(--gold);
+      color: var(--black);
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 14px;
+      white-space: nowrap;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 500;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- LOADER -->
+  <div id="loader">
+    <div class="loader-icon"><i class="fa-solid fa-taxi"></i></div>
+    <div class="loader-label">BIENVENIDO</div>
+    <div class="loader-label">DISFRUTA EL VIAJE</div>
+    <div class="loader-bar">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"><i class="fa-solid fa-address-card"></i> ¡Contacto guardado!</div>
+
+  <!-- MAIN -->
+  <main id="main">
+
+    <!-- TOP -->
+    <div class="top-strip">-BIENVENIDO A BORDO-
+    </div>
+
+    <!-- HERO -->
+    <div class="hero">
+
+      <div class="player-controls">
+        <button class="nav-arrow" onclick="changeTrack(-1)"><i class="fa-solid fa-chevron-left"></i></button>
+
+        <!-- VINYL DISC PLAYER -->
+        <div class="disc-wrap" id="discWrap" onclick="togglePlay()">
+
+          <!-- Outer glow -->
+          <div class="disc-glow"></div>
+
+          <!-- The vinyl disc (spins) -->
+          <div class="disc-vinyl" id="discVinyl">
+
+            <!-- Artist photo as center label -->
+            <div class="disc-photo">
+              <!-- Replace src with your actual photo URL -->
+              <img src="valerio.jpeg" alt="Artista" id="discImg">
+              <div class="disc-photo-placeholder"><i class="fa-solid fa-microphone-lines"></i></div>
+            </div>
+
+            <!-- Center hole -->
+            <div class="disc-hole"></div>
+          </div>
+
+          <!-- Play/Pause button -->
+          <div class="disc-btn" id="discBtn">
+            <!-- Play icon (shown when paused) -->
+            <svg id="iconPlay" viewBox="0 0 24 24">
+              <path d="M8 5v14l11-7z" />
+            </svg>
+            <!-- Pause icon (hidden when paused) -->
+            <svg id="iconPause" viewBox="0 0 24 24" style="display:none">
+              <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+            </svg>
+          </div>
+
+          <!-- Needle arm -->
+          <div class="needle" id="needle">
+            <svg viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="16" cy="8" r="6" fill="#2a2a2a" stroke="var(--disc-color)" stroke-width="1.5" style="transition: stroke 0.5s" />
+              <circle cx="16" cy="8" r="2.5" fill="var(--disc-color)" style="transition: fill 0.5s" />
+              <line x1="16" y1="14" x2="30" y2="62" stroke="#888" stroke-width="2" stroke-linecap="round" />
+              <circle cx="30" cy="63" r="2.5" fill="var(--disc-color)" style="transition: fill 0.5s" />
+            </svg>
+          </div>
+        </div>
+
+        <button class="nav-arrow" onclick="changeTrack(1)"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+
+      <!-- Now playing indicator -->
+      <div class="now-playing" id="nowPlaying">
+        <div class="np-bars">
+          <div class="np-bar"></div>
+          <div class="np-bar"></div>
+          <div class="np-bar"></div>
+          <div class="np-bar"></div>
+          <div class="np-bar"></div>
+        </div>
+        <span class="np-text">REPRODUCIENDO</span>
+      </div>
+
+      <!-- Hidden audio element — replace src with your song URL or mp3 file -->
+      <audio id="playerAudio" preload="none" loop>
+        <source src="./valerio.mp3" type="audio/mpeg">
+      </audio>
+
+      <div class="hero-name">VALERIO HUAMAN</div>
+      <div class="hero-sub">Músico · Conductor · Tu viaje con banda sonora</div>
+      <div class="hero-tags">
+        <span class="tag"><i class="fa-solid fa-music"></i> Artista</span>
+        <span class="tag"><i class="fa-solid fa-taxi"></i> Taxi 24/7</span>
+        <span class="tag"><i class="fa-solid fa-guitar"></i> Eventos</span>
+      </div>
+    </div>
+
+    <!-- ── 1: MI MÚSICA ── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">01</span>
+        <span class="section-title">MI MÚSICA</span>
+      </div>
+
+      <div class="music-msg">
+        <p>La música que escuchas ahora es mía. <strong>Búscame en tus plataformas</strong> y llévate el viaje contigo.
+        </p>
+      </div>
+
+      <div class="music-platforms">
+        <a href="#" class="platform-btn btn-fb">
+          <span class="p-icon"><i class="fa-brands fa-facebook fa-beat" style="--fa-animation-duration: 2s;"></i></span>
+          <span class="p-info">
+            <span class="p-name">Facebook</span>
+            <span class="p-action">Seguir</span>
+          </span>
+        </a>
+        <a href="#" class="platform-btn btn-pres">
+          <span class="p-icon"><i class="fa-solid fa-images fa-beat"
+              style="--fa-animation-duration: 2s; --fa-animation-delay: 0.5s;"></i></span>
+          <span class="p-info">
+            <span class="p-name">Presentaciones</span>
+            <span class="p-action">Realizadas</span>
+          </span>
+        </a>
+        <a href="#" class="platform-btn btn-yt">
+          <span class="p-icon"><i class="fa-brands fa-youtube fa-beat"
+              style="--fa-animation-duration: 2s; --fa-animation-delay: 1s;"></i></span>
+          <span class="p-info">
+            <span class="p-name">YouTube</span>
+            <span class="p-action">Suscribirse</span>
+          </span>
+        </a>
+        <a href="#" class="platform-btn btn-tt">
+          <span class="p-icon"><i class="fa-brands fa-tiktok fa-beat"
+              style="--fa-animation-duration: 2s; --fa-animation-delay: 1.5s;"></i></span>
+          <span class="p-info">
+            <span class="p-name">TikTok</span>
+            <span class="p-action">Seguir</span>
+          </span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── 2: NECESITAS TAXI ── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">02</span>
+        <span class="section-title">¿OTRO DÍA?</span>
+      </div>
+
+      <a class="taxi-big-btn tbtn-contact" onclick="downloadVCF(event)" href="#">
+        <div class="tbtn-left">
+          <span class="tbtn-icon"><i class="fa-solid fa-address-card fa-beat-fade"></i></span>
+          <div>
+            <div class="tbtn-title">GUARDAR CONTACTO</div>
+            <div class="tbtn-sub">Un tap y me tienes para siempre</div>
+          </div>
+        </div>
+        <span class="tbtn-arrow">→</span>
+      </a>
+
+      <a class="taxi-big-btn tbtn-wa"
+        href="https://wa.me/TUNUMERO?text=Hola!%20Te%20conoc%C3%AD%20en%20tu%20taxi.%20%C2%BFEst%C3%A1s%20disponible%3F"
+        target="_blank">
+        <div class="tbtn-left">
+          <span class="tbtn-icon"><i class="fa-brands fa-whatsapp fa-beat-fade"></i></span>
+          <div>
+            <div class="tbtn-title">PEDIR TAXI</div>
+            <div class="tbtn-sub">WhatsApp directo · 24/7</div>
+          </div>
+        </div>
+        <span class="tbtn-arrow">→</span>
+      </a>
+    </div>
+
+    <!-- ── 3: EVENTOS ── -->
+    <div class="section">
+      <div class="section-header">
+        <span class="section-num">03</span>
+        <span class="section-title">CONTRÁTAME</span>
+      </div>
+
+      <div class="event-types">
+        <div class="event-chip">
+          <span class="event-chip-icon"><i class="fa-solid fa-ring"></i></span>
+          <span class="event-chip-label">Bodas</span>
+        </div>
+        <div class="event-chip">
+          <span class="event-chip-icon"><i class="fa-solid fa-cake-candles"></i></span>
+          <span class="event-chip-label">Fiestas</span>
+        </div>
+        <div class="event-chip">
+          <span class="event-chip-icon"><i class="fa-solid fa-champagne-glasses"></i></span>
+          <span class="event-chip-label">Empresas</span>
+        </div>
+        <div class="event-chip">
+          <span class="event-chip-icon"><i class="fa-solid fa-martini-glass-citrus"></i></span>
+          <span class="event-chip-label">Bares</span>
+        </div>
+        <div class="event-chip">
+          <span class="event-chip-icon"><i class="fa-solid fa-graduation-cap"></i></span>
+          <span class="event-chip-label">Graduaciones</span>
+        </div>
+      </div>
+
+      <a class="event-wa-btn"
+        href="https://wa.me/TUNUMERO?text=Hola!%20Te%20conoc%C3%AD%20en%20tu%20taxi.%20Me%20gustar%C3%ADa%20contratarte%20para%20un%20evento"
+        target="_blank">
+        <i class="fa-solid fa-guitar fa-shake"></i> &nbsp; ESCRIBIRME POR UN EVENTO
+      </a>
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-name">Valerio Huaman</div>
+      <div class="footer-copy">Gracias por subirte <i class="fa-solid fa-music"></i></div>
+    </footer>
+
+  </main>
+
+  <script>
+    // ── LOADER ──
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const loader = document.getElementById('loader');
+        loader.style.transition = 'opacity 0.5s';
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          document.getElementById('main').classList.add('visible');
+        }, 500);
+      }, 1700);
+    });
+
+    // ── VINYL PLAYER DUAL ──
+    const tracks = [
+      {
+        src: "./valerio.mp3",
+        img: "valerio.jpeg",
+        title: "VALERIO HUAMAN",
+        sub: "Músico · Conductor · Tu viaje con banda sonora",
+        color: "#D4AF37",
+        glow: "rgba(212, 175, 55, 0.6)"
+      },
+      {
+        src: "./valerio2.mp3", // Replace with real URL
+        img: "cover2.jpeg", // Replace with real URL
+        title: "RITMOS DE TAXI",
+        sub: "Vol. 2 · La calle tiene su propia voz",
+        color: "#9D4EDD", // Complementary purple for the dark theme
+        glow: "rgba(157, 78, 221, 0.6)"
+      }
+    ];
+
+    let currentTrack = 0;
+    let isPlaying = false;
+    let isSwitching = false;
+    
+    const audio = document.getElementById('playerAudio');
+    const disc = document.getElementById('discVinyl');
+    const needle = document.getElementById('needle');
+    const iconPlay = document.getElementById('iconPlay');
+    const iconPause = document.getElementById('iconPause');
+    const nowPlaying = document.getElementById('nowPlaying');
+    
+    const discImg = document.getElementById('discImg');
+    const heroName = document.querySelector('.hero-name');
+    const heroSub = document.querySelector('.hero-sub');
+
+    function togglePlay() {
+      if (isSwitching) return;
+      if (!isPlaying) {
+        disc.classList.add('spinning');
+        needle.classList.add('on-disc');
+        iconPlay.style.display = 'none';
+        iconPause.style.display = 'block';
+        nowPlaying.classList.add('visible');
+
+        audio.play().catch(() => {});
+        isPlaying = true;
+      } else {
+        disc.classList.remove('spinning');
+        needle.classList.remove('on-disc');
+        iconPlay.style.display = 'block';
+        iconPause.style.display = 'none';
+        nowPlaying.classList.remove('visible');
+
+        audio.pause();
+        isPlaying = false;
+      }
+    }
+    
+    function changeTrack(dir) {
+      if (isSwitching) return;
+      isSwitching = true;
+      
+      let nextTrack = currentTrack + dir;
+      if (nextTrack >= tracks.length) nextTrack = 0;
+      if (nextTrack < 0) nextTrack = tracks.length - 1;
+
+      // Pause current if playing
+      let wasPlaying = isPlaying;
+      if (isPlaying) togglePlay();
+
+      // Roll out animation
+      const outClass = dir > 0 ? 'disc-out-left' : 'disc-out-right';
+      const inClass = dir > 0 ? 'disc-out-right' : 'disc-out-left';
+      
+      disc.classList.add(outClass);
+
+      setTimeout(() => {
+        // Update data midway
+        currentTrack = nextTrack;
+        const t = tracks[currentTrack];
+        
+        discImg.src = t.img;
+        heroName.textContent = t.title;
+        heroSub.textContent = t.sub;
+        
+        document.documentElement.style.setProperty('--disc-color', t.color);
+        document.documentElement.style.setProperty('--disc-glow', t.glow);
+        audio.src = t.src;
+
+        // prepare for roll-in
+        disc.classList.remove(outClass);
+        disc.classList.add(inClass);
+        
+        // force reflow to ensure it parses the left/right position
+        void disc.offsetWidth;
+
+        disc.classList.remove(inClass);
+        
+        setTimeout(() => {
+          isSwitching = false;
+          // Auto-play the new track optionally
+          if(wasPlaying) togglePlay();
+        }, 400); 
+      }, 300); // Wait for transform out
+    }
+
+    // Sync if audio ends
+    audio.addEventListener('ended', () => {
+      // You could also call changeTrack(1) here for continuous play
+      if(isPlaying) togglePlay();
+    });
+
+    // ── VCF ──
+    function downloadVCF(e) {
+      e.preventDefault();
+      const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:[Nombre Artístico]\nTEL;TYPE=CELL:+00000000000\nEMAIL:tu@correo.com\nURL:https://tusitio.com\nNOTE:Tu taxista y artista de confianza. 24/7\nEND:VCARD`;
+      const blob = new Blob([vcf], { type: 'text/vcard' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'ArtistsCab.vcf';
+      a.click();
+      showToast('<i class="fa-solid fa-address-card"></i> ¡Contacto guardado!');
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.innerHTML = msg;
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2800);
+    }
+  </script>
+</body>
+
+</html>
