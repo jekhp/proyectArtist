@@ -50,51 +50,107 @@
     #loader {
       position: fixed;
       inset: 0;
-      background: var(--black);
       z-index: 999;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 20px;
+      gap: 0;
+      overflow: hidden;
     }
 
-    .loader-icon {
-      font-size: 52px;
-      animation: pulse 1s ease-in-out infinite;
+    .loader-bg {
+      position: absolute;
+      inset: 0;
+      background: url('portada.jpeg') center center / cover no-repeat;
+      transform: scale(1.06);
+      animation: loader-zoom 2.2s ease forwards;
     }
 
-    @keyframes pulse {
-
-      0%,
-      100% {
-        transform: scale(1)
+    @keyframes loader-zoom {
+      from {
+        transform: scale(1.06);
       }
 
-      50% {
-        transform: scale(1.1)
+      to {
+        transform: scale(1.0);
       }
     }
 
-    .loader-label {
+    .loader-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom,
+          rgba(0, 0, 0, 0.55) 0%,
+          rgba(0, 0, 0, 0.3) 40%,
+          rgba(0, 0, 0, 0.65) 75%,
+          rgba(0, 0, 0, 0.92) 100%);
+    }
+
+    .loader-vignette {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.7) 100%);
+    }
+
+    .loader-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 24px;
+      width: 100%;
+      margin-top: auto;
+      padding-bottom: 60px;
+    }
+
+    .loader-welcome {
+      font-size: 12px;
+      letter-spacing: 5px;
+      color: rgba(240, 206, 106, 0.9);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 12px rgba(0, 0, 0, 0.9);
+    }
+
+    .loader-names {
       font-family: 'Bebas Neue', sans-serif;
-      font-size: 22px;
-      letter-spacing: 6px;
-      color: var(--gold);
+      font-size: clamp(28px, 8vw, 42px);
+      letter-spacing: 3px;
+      text-align: center;
+      line-height: 1.1;
+      margin-bottom: 6px;
+      color: #fff;
+      text-shadow:
+        0 0 20px rgba(212, 175, 55, 0.8),
+        0 2px 4px rgba(0, 0, 0, 1),
+        2px 2px 0 rgba(0, 0, 0, 0.8),
+        -2px -2px 0 rgba(0, 0, 0, 0.8);
+    }
+
+    .loader-sub-tag {
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.75);
+      text-transform: uppercase;
+      margin-bottom: 28px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 1);
     }
 
     .loader-bar {
-      width: 160px;
+      width: 200px;
       height: 2px;
-      background: var(--surface2);
+      background: rgba(255, 255, 255, 0.15);
       border-radius: 2px;
       overflow: hidden;
+      margin-bottom: 12px;
     }
 
     .loader-fill {
       height: 100%;
       background: linear-gradient(90deg, var(--gold), var(--gold-light));
-      animation: fill 1.6s ease forwards;
+      animation: fill 1.8s ease forwards;
     }
 
     @keyframes fill {
@@ -104,6 +160,20 @@
 
       to {
         width: 100%
+      }
+    }
+
+    .loader-dots {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: rgba(212, 175, 55, 0.7);
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
       }
     }
 
@@ -751,11 +821,19 @@
 
   <!-- LOADER -->
   <div id="loader">
-    <div class="loader-icon"><i class="fa-solid fa-taxi"></i></div>
-    <div class="loader-label">BIENVENIDO</div>
-    <div class="loader-label">DISFRUTA EL VIAJE</div>
-    <div class="loader-bar">
-      <div class="loader-fill"></div>
+    <div class="loader-bg"></div>
+    <div class="loader-overlay"></div>
+    <div class="loader-vignette"></div>
+    <div class="loader-content">
+      <div class="loader-welcome">🎫 Bienvenido a bordo</div>
+      <div class="loader-names">
+        <span>Zenobia</span> &amp; <span>Valerio</span><br>Huanán
+      </div>
+      <div class="loader-sub-tag">Música Folclórica y Romántica · Sur del Perú</div>
+      <div class="loader-bar">
+        <div class="loader-fill"></div>
+      </div>
+      <div class="loader-dots">● CARGANDO EXPERIENCIA</div>
     </div>
   </div>
 
@@ -810,7 +888,8 @@
           <!-- Needle arm -->
           <div class="needle" id="needle">
             <svg viewBox="0 0 50 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <circle cx="16" cy="8" r="6" fill="#2a2a2a" stroke="var(--disc-color)" stroke-width="1.5" style="transition: stroke 0.5s" />
+              <circle cx="16" cy="8" r="6" fill="#2a2a2a" stroke="var(--disc-color)" stroke-width="1.5"
+                style="transition: stroke 0.5s" />
               <circle cx="16" cy="8" r="2.5" fill="var(--disc-color)" style="transition: fill 0.5s" />
               <line x1="16" y1="14" x2="30" y2="62" stroke="#888" stroke-width="2" stroke-linecap="round" />
               <circle cx="30" cy="63" r="2.5" fill="var(--disc-color)" style="transition: fill 0.5s" />
@@ -839,7 +918,7 @@
       </audio>
 
       <div class="hero-name">VALERIO HUAMAN</div>
-      <div class="hero-sub">Músico · Conductor · Tu viaje con banda sonora</div>
+      <div class="hero-sub">Músico · Conductor </div>
       <div class="hero-tags">
         <span class="tag"><i class="fa-solid fa-music"></i> Artista</span>
         <span class="tag"><i class="fa-solid fa-taxi"></i> Taxi 24/7</span>
@@ -860,7 +939,7 @@
       </div>
 
       <div class="music-platforms">
-        <a href="#" class="platform-btn btn-fb">
+        <a href="https://www.facebook.com/valerio.huaman.921190" class="platform-btn btn-fb">
           <span class="p-icon"><i class="fa-brands fa-facebook fa-beat" style="--fa-animation-duration: 2s;"></i></span>
           <span class="p-info">
             <span class="p-name">Facebook</span>
@@ -913,7 +992,7 @@
       </a>
 
       <a class="taxi-big-btn tbtn-wa"
-        href="https://wa.me/TUNUMERO?text=Hola!%20Te%20conoc%C3%AD%20en%20tu%20taxi.%20%C2%BFEst%C3%A1s%20disponible%3F"
+        href="https://wa.me/51931830257?text=Hola%2C%20obtuve%20tu%20n%C3%BAmero%20de%20tu%20servicio%20de%20taxi.%20%C2%BFEst%C3%A1s%20disponible%3F"
         target="_blank">
         <div class="tbtn-left">
           <span class="tbtn-icon"><i class="fa-brands fa-whatsapp fa-beat-fade"></i></span>
@@ -996,10 +1075,10 @@
         glow: "rgba(212, 175, 55, 0.6)"
       },
       {
-        src: "./valerio2.mp3", // Replace with real URL
-        img: "cover2.jpeg", // Replace with real URL
-        title: "RITMOS DE TAXI",
-        sub: "Vol. 2 · La calle tiene su propia voz",
+        src: "./senovia.mp3", // Replace with real URL
+        img: "senovia.jpeg", // Replace with real URL
+        title: "Zenovia Huarancca",
+        sub: "La Novia Del Sur",
         color: "#9D4EDD", // Complementary purple for the dark theme
         glow: "rgba(157, 78, 221, 0.6)"
       }
@@ -1008,14 +1087,14 @@
     let currentTrack = 0;
     let isPlaying = false;
     let isSwitching = false;
-    
+
     const audio = document.getElementById('playerAudio');
     const disc = document.getElementById('discVinyl');
     const needle = document.getElementById('needle');
     const iconPlay = document.getElementById('iconPlay');
     const iconPause = document.getElementById('iconPause');
     const nowPlaying = document.getElementById('nowPlaying');
-    
+
     const discImg = document.getElementById('discImg');
     const heroName = document.querySelector('.hero-name');
     const heroSub = document.querySelector('.hero-sub');
@@ -1029,7 +1108,7 @@
         iconPause.style.display = 'block';
         nowPlaying.classList.add('visible');
 
-        audio.play().catch(() => {});
+        audio.play().catch(() => { });
         isPlaying = true;
       } else {
         disc.classList.remove('spinning');
@@ -1042,11 +1121,11 @@
         isPlaying = false;
       }
     }
-    
+
     function changeTrack(dir) {
       if (isSwitching) return;
       isSwitching = true;
-      
+
       let nextTrack = currentTrack + dir;
       if (nextTrack >= tracks.length) nextTrack = 0;
       if (nextTrack < 0) nextTrack = tracks.length - 1;
@@ -1058,18 +1137,18 @@
       // Roll out animation
       const outClass = dir > 0 ? 'disc-out-left' : 'disc-out-right';
       const inClass = dir > 0 ? 'disc-out-right' : 'disc-out-left';
-      
+
       disc.classList.add(outClass);
 
       setTimeout(() => {
         // Update data midway
         currentTrack = nextTrack;
         const t = tracks[currentTrack];
-        
+
         discImg.src = t.img;
         heroName.textContent = t.title;
         heroSub.textContent = t.sub;
-        
+
         document.documentElement.style.setProperty('--disc-color', t.color);
         document.documentElement.style.setProperty('--disc-glow', t.glow);
         audio.src = t.src;
@@ -1077,30 +1156,38 @@
         // prepare for roll-in
         disc.classList.remove(outClass);
         disc.classList.add(inClass);
-        
+
         // force reflow to ensure it parses the left/right position
         void disc.offsetWidth;
 
         disc.classList.remove(inClass);
-        
+
         setTimeout(() => {
           isSwitching = false;
           // Auto-play the new track optionally
-          if(wasPlaying) togglePlay();
-        }, 400); 
+          if (wasPlaying) togglePlay();
+        }, 400);
       }, 300); // Wait for transform out
     }
 
     // Sync if audio ends
     audio.addEventListener('ended', () => {
       // You could also call changeTrack(1) here for continuous play
-      if(isPlaying) togglePlay();
+      if (isPlaying) togglePlay();
     });
 
     // ── VCF ──
     function downloadVCF(e) {
       e.preventDefault();
-      const vcf = `BEGIN:VCARD\nVERSION:3.0\nFN:[Nombre Artístico]\nTEL;TYPE=CELL:+00000000000\nEMAIL:tu@correo.com\nURL:https://tusitio.com\nNOTE:Tu taxista y artista de confianza. 24/7\nEND:VCARD`;
+      const vcf = `BEGIN:VCARD
+      VERSION:3.0
+      N:Huaman;Valerio;;;
+      FN:Valerio Huaman
+      TEL;TYPE=CELL,VOICE:+51931830257
+      EMAIL;TYPE=INTERNET:tu@correo.com
+      URL:https://tusitio.com
+      NOTE:Tu taxista y artista de confianza. 24/7
+      END:VCARD`;
       const blob = new Blob([vcf], { type: 'text/vcard' });
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
