@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://jekhp.github.io/proyectArtist/sitemap.xml
