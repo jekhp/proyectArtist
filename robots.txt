@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://jekhp.github.io/proyectArtist/sitemap.xml
+Sitemap: https://valeriohuaman.netlify.app/sitemap.xml
